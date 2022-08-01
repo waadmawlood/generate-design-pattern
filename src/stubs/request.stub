@@ -21,9 +21,7 @@ class {{name}} extends FormRequest
      */
     public function rules()
     {
-        return [
-            return $this->isMethod('POST') ? $this->store() : $this->update();
-        ];
+        return $this->isMethod('POST') ? $this->store() : $this->update();
     }
 
     /**

@@ -21,11 +21,11 @@ $ php artisan vendor:publish --provider=Waad\RepoMedia\PatternServiceProvider
 ## Commands:
 ##### full command
 ```sh
-$ php artisan make:repo User --c --r --m
+php artisan repo:model User --c --r --m
 ```
 ##### or if you have model 
 ```sh
-$ php artisan make:repo User --c --r --model=User
+php artisan repo:model User --c --r --model=User
 ```
 ##### and you can use `--force` command
 
