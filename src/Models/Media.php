@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use Waad\Pattern\Models\ModelTrait;
+use Waad\RepoMedia\Models\ModelTrait;
 use Illuminate\Support\Facades\Auth;
 
 class Media extends Model

@@ -1,8 +1,8 @@
 <?php
 
-namespace Waad\Pattern;
+namespace Waad\RepoMedia;
 
-use Waad\Pattern\GenerateRepo;
+use Waad\RepoMedia\GenerateRepo;
 use Illuminate\Support\ServiceProvider;
 
 class PatternServiceProvider extends ServiceProvider
@@ -15,9 +15,9 @@ class PatternServiceProvider extends ServiceProvider
     public function register()
     {
 
-        $this->publishes([
-            __DIR__ . '/Repositories/BaseRepository.php' => base_path('app/Http/Repositories/BaseRepository.php'),
-        ]);
+        // $this->publishes([
+        //     __DIR__ . '/Repositories/BaseRepository.php' => base_path('app/Http/Repositories/BaseRepository.php'),
+        // ]);
 
         $this->publishes([
             __DIR__ . '/Models/Media.php' => base_path('app/Models/Media.php'),

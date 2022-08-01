@@ -1,6 +1,6 @@
 <?php
 
-namespace waad\Pattern\Commands;
+namespace waad\RepoMedia\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;

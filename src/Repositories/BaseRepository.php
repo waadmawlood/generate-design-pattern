@@ -1,6 +1,6 @@
 <?php
 
-namespace Waad\Pattern\Repositories;
+namespace Waad\RepoMedia\Repositories;
 
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Database\Eloquent\Model;

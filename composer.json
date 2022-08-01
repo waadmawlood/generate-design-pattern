@@ -12,6 +12,13 @@
             "Waad\\RepoMedia\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Waad\\RepoMedia\\PatternServiceProvider"
+            ]
+        }
+    },
     "authors": [
         {
             "name": "Waad Mawlood",

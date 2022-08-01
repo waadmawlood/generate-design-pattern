@@ -1,8 +1,8 @@
 <?php
 
-namespace Waad\Pattern;
+namespace Waad\RepoMedia;
 
-use Waad\Pattern\Commands\Repository;
+use Waad\RepoMedia\Commands\Repository;
 use Illuminate\Support\Str;
 
 class GenerateRepo extends Repository

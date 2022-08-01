@@ -1,5 +1,5 @@
 namespace App\Http\Repositories;
-use Waad\Pattern\Repositories\BaseRepository;
+use Waad\RepoMedia\Repositories\BaseRepository;
 
 class {{name}}Repository extends BaseRepository {
 

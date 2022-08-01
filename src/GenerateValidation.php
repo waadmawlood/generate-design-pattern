@@ -1,8 +1,8 @@
 <?php
 
-namespace Waad\Pattern;
+namespace Waad\RepoMedia;
 
-use Waad\Pattern\Commands\Validation;
+use Waad\RepoMedia\Commands\Validation;
 
 class GenerateValidation extends Validation
 {

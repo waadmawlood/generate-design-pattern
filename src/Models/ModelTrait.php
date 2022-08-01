@@ -1,5 +1,5 @@
 <?php
-namespace Waad\Pattern\Models;
+namespace Waad\RepoMedia\Models;
 
 use App\Models\Media;
 use DateTimeInterface;
@@ -16,7 +16,7 @@ trait ModelTrait
         return $this->morphMany(Media::class, 'media');
     }
 
-    public function addMedia(string|\Symfony\Component\HttpFoundation\File\UploadedFile $file, $bio = null , $file_type = null){
+    public function addMedia($file, $bio = null , $file_type = null){
         if($file){
             $Image = Str::random(32) . time() . '.' .$file->extension();
             $destinationPath = storage_path('app/public/upload');
