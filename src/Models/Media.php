@@ -15,9 +15,9 @@ class Media extends Model
         'model_id',
         'model_type',
         'path',
-        'bio',
+        'index',
         'file_name',
-        'file_type',
+        'buket',
         'mime_type',
         'file_size',
         'status',
@@ -39,8 +39,10 @@ class Media extends Model
     // morph relationship of all models
     public function model()
     {
-        return $this->morphTo('media');
+        return $this->morphTo('model');
     }
 
-
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

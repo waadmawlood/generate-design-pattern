@@ -13,27 +13,27 @@ trait ModelTrait
 
     //relation with Media
     public function media(){
-        return $this->morphMany(Media::class, 'media');
+        return $this->morphMany(Media::class,'model');
     }
 
-    public function addMedia($file, $bio = null , $file_type = null){
+    public function addMedia($file, $index = null){
         if($file){
             $Image = Str::random(32) . time() . '.' .$file->extension();
             $destinationPath = storage_path('app/public/upload');
-            $file->move($destinationPath, $Image);
+            $movePath = $file->move($destinationPath, $Image);
+            $mime = $file->getClientMimeType();
+            $fileType = str_replace('/' . basename($mime),'',$mime);
             return $this->media()->create([
                 'path' => $Image,
-                'bio' => $bio,
+                'index' => $index,
                 'file_name' => $file->getClientOriginalName(),
-                'file_type' => $file_type,
-                'mime_type' => $file->getMimeType(),
-                'file_size' => filesize($file),
+                'buket' => ucfirst($fileType),
+                'mime_type' => basename($mime),
+                'file_size' => filesize($movePath),
             ]);
-            return $Image;
         }else{
             return null;
         }
-
     }
 
 

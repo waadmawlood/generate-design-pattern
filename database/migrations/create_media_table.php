@@ -19,9 +19,9 @@ return new class extends Migration
             $table->morphs('model');
             $table->string('path');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('bio')->nullable();
+            $table->integer('index')->default(0);
             $table->string('file_name')->nullable();
-            $table->string('file_type')->nullable();
+            $table->string('buket')->nullable();
             $table->string('mime_type')->nullable();
             $table->unsignedBigInteger('file_size')->default(0);
             $table->boolean('status')->default(true);
