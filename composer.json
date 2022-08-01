@@ -1,0 +1,22 @@
+{
+    "name": "waad/repo-media",
+    "description": "package repository design pattern and media",
+    "type": "library",
+    "require": {
+        "php": ">=7.2",
+        "illuminate/support": ">=5.4"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Waad\\RepoMedia\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Waad Mawlood",
+            "email": "w12345678996392@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}

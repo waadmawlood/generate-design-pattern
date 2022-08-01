@@ -1,0 +1,6 @@
+<?php
+namespace {namespace}Repositories;
+class {name}Repository extends BaseRepository {
+
+    
+}

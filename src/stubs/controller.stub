@@ -1,0 +1,92 @@
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Repositories\{{name}}Repository;
+use App\Models\{{name}};
+use App\Http\Requests\{{name}}\Create{{name}};
+use App\Http\Requests\{{name}}\Update{{name}};
+use App\Http\Requests\Pagination;
+use Symfony\Component\HttpFoundation\Response;
+
+class {{name}}Controller extends Controller
+{
+    private ${{name}}Repository;
+    public function __construct()
+    {
+        $this->{{name}}Repository = new {{name}}Repository(new {{model}}());
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Pagination $request)
+    {
+        return $this->{{name}}Repository->index($request->take);
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Create{{name}} $request)
+    {
+        $data = $request->validated();
+        $this->{{name}}Repository->create($data);
+        return response()->json([
+            'success' => true,
+            'message' => '{{name}} created successfully',
+            'data' => $response
+
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\\$name  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return $this->{{name}}Repository->show($id);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\\$name  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Update{{name}} $request, $id)
+    {
+        $data = $request->validated();
+        $this->{{name}}Repository->update($id, $data);
+        return response()->json([
+            'success' => true,
+            'message' => '{{name}} updated successfully. id ' . $id,
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\\$name  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $this->{{name}}Repository->delete($id);
+        return response()->json([
+            'success' => true,
+            'message' => '{{name}} deleted successfully. id ' . $id,
+        ], Response::HTTP_OK);
+    }
+
+}
