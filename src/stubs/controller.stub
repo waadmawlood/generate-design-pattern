@@ -35,7 +35,7 @@ class {{name}}Controller extends Controller
     public function store({{name}}Form $request)
     {
         $data = $request->validated();
-        $this->{{name}}Repository->create($data);
+        $response = $this->{{name}}Repository->create($data);
         return response()->json([
             'success' => true,
             'message' => '{{name}} created successfully',
