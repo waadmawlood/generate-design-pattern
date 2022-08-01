@@ -1,5 +1,5 @@
 {
-    "name": "waadmawlood/repo-media",
+    "name": "waad/repo-media",
     "description": "package repository design pattern and media",
     "type": "library",
     "require": {
