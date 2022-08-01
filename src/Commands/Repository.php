@@ -132,7 +132,7 @@ class Repository extends Command
             mkdir($path, 0777);
         }
         $create = $path . '/' . $name . 'Form.php';
-        $this->createRequest($create, $name . 'Form' . $name, $name);
+        $this->createRequest($create, $name . 'Form', $name);
     }
 
 

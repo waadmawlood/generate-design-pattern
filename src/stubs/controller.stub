@@ -3,8 +3,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Repositories\{{name}}Repository;
 use App\Models\{{name}};
-use App\Http\Requests\{{name}}\Create{{name}};
-use App\Http\Requests\{{name}}\Update{{name}};
+use App\Http\Requests\{{name}}Form;
 use App\Http\Requests\Pagination;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,7 +32,7 @@ class {{name}}Controller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Create{{name}} $request)
+    public function store({{name}}Form $request)
     {
         $data = $request->validated();
         $this->{{name}}Repository->create($data);
@@ -64,7 +63,7 @@ class {{name}}Controller extends Controller
      * @param  \App\\$name  $name
      * @return \Illuminate\Http\Response
      */
-    public function update(Update{{name}} $request, $id)
+    public function update({{name}}Form $request, $id)
     {
         $data = $request->validated();
         $this->{{name}}Repository->update($id, $data);
