@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "php": ">=7.2",
-        "illuminate/support": ">=5.4"
+        "illuminate/support": ">=5.4",
+        "spatie/laravel-query-builder": "^3.4"
     },
     "license": "MIT",
     "autoload": {
