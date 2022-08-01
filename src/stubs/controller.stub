@@ -22,7 +22,7 @@ class {{name}}Controller extends Controller
      */
     public function index(Pagination $request)
     {
-        return $this->{{name}}Repository->index($request->take);
+        return $this->{{name}}Repository->index($request->take, $request->find);
     }
 
 

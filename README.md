@@ -51,6 +51,7 @@ INCLUDING RELATIONS BASED ON A REQUEST
 ```sh
 /users?include=posts
 /users?include=posts,comments
+/users?include=posts,comments.user
 ```
 
 SORTING A QUERY BASED ON A REQUEST
@@ -60,20 +61,20 @@ SORTING A QUERY BASED ON A REQUEST
 ```
 
 
-TAKE DATA
+TAKE PAGINATION DATA
 ```sh
 /users?take=10
 ```
+TAKE All DATA without take = null
 
-
-SKIP DATA
+Page pagination DATA
 ```sh
-/users?skip=10
+/users?page=10
 ```
 
-CUSTOM CONDITIONS
+Find CUSTOM CONDITION
 ```sh
-/users?where={"column":"parent_to","condition":"!=", "value":"0"}
+/users?find[column]=department_id&find[condition]==&find[value]=2 
 ```
 
 

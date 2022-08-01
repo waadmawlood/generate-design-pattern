@@ -31,11 +31,14 @@ abstract class BaseRepository
         return $getRelation->getValue(new $this->model);
     }
     //Base repo to get all items
-    public function index($take = null){
+    public function index($take = null, $find = null){
         $result = QueryBuilder::for($this->model)
                                 ->allowedIncludes($this->getRelationMethod())
                                 ->allowedFilters($this->getProperties())
                                 ->allowedSorts($this->getProperties());
+        if($find) {
+            $result = $result->where($find['column'], $find['condition'], $find['value']);
+        }
         return $take == null ? $result->get() : $result->paginate($take);
     }
     //Base repo to get item by id
