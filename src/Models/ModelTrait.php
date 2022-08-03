@@ -17,7 +17,7 @@ trait ModelTrait
         return $this->morphMany(Media::class,'model');
     }
 
-    public function add($file, $index = 0){
+    public function addMedia($file, $index = 0){
         if($file){
             $Image = Str::random(32) . time() . '.' .$file->extension();
             $destinationPath = storage_path('app/public/upload');
@@ -37,7 +37,7 @@ trait ModelTrait
         }
     }
 
-    public function addArray($files){
+    public function addMediaArray($files){
         if($files){
             for($i = 0 ; $i < count($files) ; $i++){
                 $file = $files[$i];
@@ -62,11 +62,11 @@ trait ModelTrait
     }
 
 
-    public function delete($id){
+    public function deleteMedia($id){
         $this->media()->destroy($id);
     }
 
-    public function destroy($id){
+    public function destroyMedia($id){
         $this->media()->findOrFail($id)->forceDelete();
     }
 
