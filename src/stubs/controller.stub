@@ -12,6 +12,7 @@ class {{name}}Controller extends Controller
     private ${{name}}Repository;
     public function __construct()
     {
+        //$this->middleware('role:admin', ['only' => ['indexAll', 'store', 'update', 'change', 'show', 'destroy', 'delete', 'restore']]);
         $this->{{name}}Repository = new {{name}}Repository(new {{model}}());
     }
 
@@ -22,14 +23,42 @@ class {{name}}Controller extends Controller
      */
     public function index(Pagination $request)
     {
-        return $this->{{name}}Repository->index($request->take, $request->find);
+        return $this->{{name}}Repository->index($request->take);
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexAll(Pagination $request)
+    {
+        return $this->{{name}}Repository->index($request->take , null , null , $request->trash);
+    }
+
+
+    /**
+     * Display the specified resource if own me.
+     *
+     * @param  Integer  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function indexMe(Pagination $request)
+    {
+        $find = [
+            'column' => 'user_id',
+            'condition' => '=',
+            'value' => auth()->user()->id
+        ];
+        return $this->{{name}}Repository->index($request->take, $find);
     }
 
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\{{name}}Form  $request
      * @return \Illuminate\Http\Response
      */
     public function store({{name}}Form $request)
@@ -47,7 +76,7 @@ class {{name}}Controller extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\\$name  $name
+     * @param  Integer  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -59,7 +88,7 @@ class {{name}}Controller extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\{{name}}Form  $request
      * @param  \App\\$name  $name
      * @return \Illuminate\Http\Response
      */
@@ -74,9 +103,29 @@ class {{name}}Controller extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update change the specified resource in storage.
      *
-     * @param  \App\\$name  $name
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Integer $id
+     * @return \Illuminate\Http\Response
+     */
+    public function change(Request $request, $id)
+    {
+        if(! $request->has('status')){
+            return response()->json(['success' => false,'message' => '{{name}} Model not Found. id ' . $id,], 404);
+        }
+        $data['status'] = ! {{name}}::findOrFail($id)->status;
+        $this->{{name}}Repository->update($id, $data);
+        return response()->json([
+            'success' => true,
+            'message' => '{{name}} updated Toggle successfully. id ' . $id,
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Soft Delete the specified resource from storage.
+     *
+     * @param  Integer  $id
      * @return \Illuminate\Http\Response
      */
     public function delete($id)
@@ -84,7 +133,37 @@ class {{name}}Controller extends Controller
         $this->{{name}}Repository->delete($id);
         return response()->json([
             'success' => true,
-            'message' => '{{name}} deleted successfully. id ' . $id,
+            'message' => '{{name}} Soft Deleted successfully. id ' . $id,
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Force Delete the specified resource from storage.
+     *
+     * @param  Integer  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $this->{{name}}Repository->destroy($id);
+        return response()->json([
+            'success' => true,
+            'message' => '{{name}} Force Deleted successfully. id ' . $id,
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Restore the specified resource from Trashed.
+     *
+     * @param  Integer  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $this->{{name}}Repository->restore($id);
+        return response()->json([
+            'success' => true,
+            'message' => '{{name}} Restored successfully. id ' . $id,
         ], Response::HTTP_OK);
     }
 

@@ -28,7 +28,7 @@ class GenerateValidation extends Validation
      * @return void
      */
 
-    protected $requestValidation = __DIR__ . '/stubs/requestValidation.stub';
+    protected $requestValidation = __DIR__ . '/stubs/request.stub';
 
     public function __construct()
     {
@@ -68,7 +68,7 @@ class GenerateValidation extends Validation
         /**
          * Request file path.
          */
-        $path = 'app/Http/Requests/' . $model;
+        $path = 'app/Http/Requests';
 
         /**
          * create path when not exists.
@@ -88,14 +88,12 @@ class GenerateValidation extends Validation
          * create request file.
          * update request file.
          */
-        $create = $path . '/Create' . $model . '.php';
-        $update = $path . '/Update' . $model . '.php';
-        $this->createRequest($create, 'Create' . $model, $validation, $model);
-        $this->createRequest($update, 'Update' . $model, $validation, $model);
+        $create = $path . '/' . $model . 'Form.php';
+        $this->createRequest($create, $model . 'Form', $validation, $model);
 
         /**
          * return message.
          */
-        return $this->comment('app\\Http\\Requests\\' . $model . ' >> Created.');
+        return $this->comment('app\\Http\\Requests\\' . $model . 'Form >> Validated.');
     }
 }

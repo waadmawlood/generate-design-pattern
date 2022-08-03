@@ -31,13 +31,25 @@ abstract class BaseRepository
         return $getRelation->getValue(new $this->model);
     }
     //Base repo to get all items
-    public function index($take = null, $find = null){
+    public function index($take = null, $find = null, $where = [], $trash = null){
         $result = QueryBuilder::for($this->model)
                                 ->allowedIncludes($this->getRelationMethod())
                                 ->allowedFilters($this->getProperties())
                                 ->allowedSorts($this->getProperties());
         if($find) {
             $result = $result->where($find['column'], $find['condition'], $find['value']);
+        }
+        if($where) {
+            foreach($where as $condition) {
+                $result = $result->where($condition['column'], $condition['condition'], $condition['value']);
+            }
+        }
+        if($trash) {
+            if($trash == 'all'){
+                $result = $result->withTrashed();
+            }else if($trash == 'trash'){
+                $result = $result->onlyTrashed();
+            }
         }
         return $take == null ? $result->get() : $result->paginate($take);
     }
@@ -46,10 +58,6 @@ abstract class BaseRepository
         return QueryBuilder::for($this->model)
                             ->allowedIncludes($this->getRelationMethod())
                             ->findOrFail($id);
-    }
-    //Base repo to check item
-    public function check($id){
-        return $this->model->find($id);
     }
     //Base repo to create item
     public function create($data){
@@ -63,7 +71,17 @@ abstract class BaseRepository
     //base repo to delete item
     public function delete($id)
     {
-        return $this->model->findOrFail($id)->delete();
+        return $this->model->destroy($id);
+    }
+    //base repo to destory item
+    public function destory($id)
+    {
+        return $this->model->findOrFail($id)->forceDelete();
+    }
+    //base repo to restore item
+    public function restore($id)
+    {
+        return $this->model->findOrFail($id)->restore();
     }
 
 }

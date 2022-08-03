@@ -17,13 +17,7 @@ class Validation extends Command
      */
     public function model($model)
     {
-        $laravel = app();
-        $version = $laravel::VERSION;
-        if ($version >= 8) {
-            $full_model = '\App\\Models\\' . $model;
-        } else {
-            $full_model = '\App\\' . $model;
-        }
+        $full_model = '\App\\Models\\' . $model;
         return $full_model;
     }
 
@@ -48,7 +42,7 @@ class Validation extends Command
     public function generateValidation($table, $model)
     {
         $columns = DB::select('describe ' . $table . '');
-        $blocked = array('created_at', 'updated_at', 'email_verified_at', 'remember_token');
+        $blocked = array('created_at', 'updated_at', 'email_verified_at', 'remember_token','deleted_at');
         $images_array = array('image', 'images', 'avatar');
         $files_array = array('file', 'files');
         $result = [];
@@ -58,8 +52,6 @@ class Validation extends Command
             if ($count == $key + 1) {
                 $last = true;
             }
-            $this->allowedSorts(strtolower($model), $column->Field, $last);
-            $this->allowedFilters(strtolower($model), $column->Field, $last);
             if ($column->Key !== 'PRI' and !in_array($column->Field, $blocked)) {
                 $validation = [];
                 if ($column->Null == 'YES') {
@@ -121,7 +113,7 @@ class Validation extends Command
         fwrite($myfile, $text);
         $result = str_replace('{{name}}', $name, $file);
         $result = str_replace('{{shortname}}', $shortname, $result);
-        $result = str_replace('{{validation}}', $last, $result);
+        $result = str_replace('//{{validation}}', $last, $result);
         fwrite($myfile, $result);
         fclose($myfile);
     }

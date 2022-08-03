@@ -29,7 +29,7 @@ class Repository extends Command
      */
     public function model($name)
     {
-        $path = 'app/' . $name . '.php';
+        $path = 'app/Models/' . $name . '.php';
         $myfile = fopen($path, "w") or die("Unable to open file!");
         $file = file_get_contents($this->model);
         $text = "<?php\n";
@@ -84,15 +84,7 @@ class Repository extends Command
         for ($i = 0; $i < $lineCount - 1; $i++) {
             fwrite($f, $lines[$i]);
         }
-
-        $laravel = app();
-        $version = $laravel::VERSION;
-        if ($version >= 8) {
-            $route_8 = 'App\Http\Controllers\\' . $controller . '::class';
-            fwrite($f, "Route::apiResource('" . strtolower($name) . "', $route_8);" . PHP_EOL);
-        } else {
-            fwrite($f, "Route::apiResource('" . strtolower($name) . "', '$controller');" . PHP_EOL);
-        }
+        fwrite($f, "Route::Resource('" . strtolower($name) . "', '$controller');" . PHP_EOL);
         fwrite($f, $lines[$lineCount - 1]);
         fclose($f);
     }
@@ -126,7 +118,7 @@ class Repository extends Command
     public function Request($name)
     {
         $this->createLimitRequest();
-        $path = 'app/Http/Requests';
+        $path = 'app/Http/Requests/';
 
         if (!is_dir($path)) {
             mkdir($path, 0777);

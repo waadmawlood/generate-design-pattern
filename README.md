@@ -7,16 +7,34 @@
 Require this package with composer using the following command:
 
 ```sh
-$ composer require waad/repo-media
+composer require waad/repo-media
 ```
 
 ```sh
-$ php artisan vendor:publish --provider=Waad\RepoMedia\PatternServiceProvider 
+php artisan vendor:publish --provider=Waad\RepoMedia\PatternServiceProvider 
 ```
 
 ## Usage
-##### in folder `config` You will find `jsonapi.php`
-##### This is where you will write `relations`, `sortable` columns and `filterable` columns 
+##### in Model
+##### $fillable = ['id',....];
+##### This is where you will write  `sortable`, `filterable` columns 
+
+
+##### in Model
+##### $relations = ['category','post.user']; 
+##### This is where you will write `relations` column 
+
+##### in  `app\Providers\AppServiceProvider.php` file
+
+```sh
+public function boot()
+    {
+        $registrar = new \Waad\RepoMedia\Helpers\Routing($this->app['router']);
+        $this->app->bind('Illuminate\Routing\ResourceRegistrar', function () use ($registrar) {
+            return $registrar;
+        });
+    }
+```
 
 ## Commands:
 ##### full command

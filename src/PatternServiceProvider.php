@@ -19,9 +19,9 @@ class PatternServiceProvider extends ServiceProvider
         //     __DIR__ . '/Repositories/BaseRepository.php' => base_path('app/Http/Repositories/BaseRepository.php'),
         // ]);
 
-        $this->publishes([
-            __DIR__ . '/Models/Media.php' => base_path('app/Models/Media.php'),
-        ]);
+        // $this->publishes([
+        //     __DIR__ . '/Models/Media.php' => base_path('app/Models/Media.php'),
+        // ]);
 
         $this->publishes([
             __DIR__.'/../database/migrations/create_media_table.php' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_media_table.php'),

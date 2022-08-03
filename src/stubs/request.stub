@@ -32,7 +32,7 @@ class {{name}} extends FormRequest
     public function store()
     {
         return [
-            //
+            //{{validation}}
         ];
     }
 
@@ -44,7 +44,7 @@ class {{name}} extends FormRequest
     public function update()
     {
         return [
-            //
+            //{{validation}}
         ];
     }
 }

@@ -3,12 +3,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use Waad\RepoMedia\Models\ModelTrait;
 use Illuminate\Support\Facades\Auth;
+use DateTimeInterface;
 
 class Media extends Model
 {
-    use ModelTrait,SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = [
         'id',
@@ -25,9 +25,13 @@ class Media extends Model
         'updated_at'
     ];
 
-    protected $relations = [];
-    protected $hidden = ['deleted_at'];
+    protected function serializeDate(DateTimeInterface $date){
+        return $date->format('Y-m-d h:i:s a');
+    }
+
+    protected $hidden = ['deleted_at','model_id','model_type'];
     protected $dates = ['deleted_at'];
+
     protected $casts = [
         'status' => 'boolean',
     ];
