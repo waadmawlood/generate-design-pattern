@@ -1,7 +1,6 @@
 <?php
 namespace Waad\RepoMedia\Models;
 
-use Waad\RepoMedia\Models\Media;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
@@ -18,7 +17,7 @@ trait ModelTrait
         return $this->morphMany(Media::class,'model');
     }
 
-    public function addMedia($file, $index = null){
+    public function add($file, $index = 0){
         if($file){
             $Image = Str::random(32) . time() . '.' .$file->extension();
             $destinationPath = storage_path('app/public/upload');
@@ -38,7 +37,7 @@ trait ModelTrait
         }
     }
 
-    public function addMediaArray($files){
+    public function addArray($files){
         if($files){
             for($i = 0 ; $i < count($files) ; $i++){
                 $file = $files[$i];
@@ -62,6 +61,14 @@ trait ModelTrait
         }
     }
 
+
+    public function delete($id){
+        $this->media()->destroy($id);
+    }
+
+    public function destroy($id){
+        $this->media()->findOrFail($id)->forceDelete();
+    }
 
 
 }

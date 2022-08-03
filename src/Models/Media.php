@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace Waad\RepoMedia\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
