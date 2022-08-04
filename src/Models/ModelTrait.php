@@ -4,6 +4,7 @@ namespace Waad\RepoMedia\Models;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Waad\RepoMedia\Helpers\Utilities;
 
 trait ModelTrait
 {
@@ -19,19 +20,7 @@ trait ModelTrait
 
     public function addMedia($file, $index = 0){
         if($file){
-            $Image = Str::random(32) . time() . '.' .$file->extension();
-            $destinationPath = storage_path('app/public/upload');
-            $movePath = $file->move($destinationPath, $Image);
-            $mime = $file->getClientMimeType();
-            $fileType = str_replace('/' . basename($mime),'',$mime);
-            return $this->media()->create([
-                'path' => $Image,
-                'index' => $index,
-                'file_name' => $file->getClientOriginalName(),
-                'buket' => ucfirst($fileType),
-                'mime_type' => basename($mime),
-                'file_size' => filesize($movePath),
-            ]);
+            return $this->addFile($file, $index);
         }else{
             return null;
         }
@@ -40,20 +29,7 @@ trait ModelTrait
     public function addMediaArray($files){
         if($files){
             for($i = 0 ; $i < count($files) ; $i++){
-                $file = $files[$i];
-                $Image = Str::random(32) . time() . '.' .$file->extension();
-                $destinationPath = storage_path('app/public/upload');
-                $movePath = $file->move($destinationPath, $Image);
-                $mime = $file->getClientMimeType();
-                $fileType = str_replace('/' . basename($mime),'',$mime);
-                $media[] =  $this->media()->create([
-                    'path' => $Image,
-                    'index' => $i,
-                    'file_name' => $file->getClientOriginalName(),
-                    'buket' => ucfirst($fileType),
-                    'mime_type' => basename($mime),
-                    'file_size' => filesize($movePath),
-                ]);
+                $media[] = $this->addFile($files[$i], $i);
             }
             return $media;
         }else{
@@ -61,14 +37,32 @@ trait ModelTrait
         }
     }
 
-
-    public function deleteMedia($id){
-        $this->media()->destroy($id);
+    private function addFile($file , $index){
+        $Image = Str::random(32) . time() . '.' .$file->extension();
+        $destinationPath = Utilities::uploadDir();
+        $movePath = $file->move($destinationPath, $Image);
+        $mime = $file->getClientMimeType();
+        $buket = Utilities::getBuket( str_replace('/' . basename($mime),'',$mime));
+        return $this->media()->create([
+            'path' => $Image,
+            'index' => $index,
+            'file_name' => $file->getClientOriginalName(),
+            'buket' => $buket,
+            'mime_type' => basename($mime),
+            'file_size' => filesize($movePath),
+        ]);
     }
 
     public function destroyMedia($id){
-        $this->media()->findOrFail($id)->forceDelete();
+        $media = $this->media()->findOrFail($id);
+        Utilities::deleteFile($media);
+        $media->forceDelete();
     }
 
-
+    public function destroyMediaArray($ids){
+        foreach($ids as $id){
+            $media = $this->media()->findOrFail($id);
+            Utilities::deleteFile($media);
+        }
+    }
 }

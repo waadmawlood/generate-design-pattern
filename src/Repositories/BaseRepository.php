@@ -4,6 +4,7 @@ namespace Waad\RepoMedia\Repositories;
 
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
+use Waad\RepoMedia\Helpers\Utilities;
 
 abstract class BaseRepository
 {
@@ -71,17 +72,23 @@ abstract class BaseRepository
     //base repo to delete item
     public function delete($id)
     {
-        return $this->model->destroy($id);
+        $object = $this->show($id);
+        $object->media()->delete();
+        return $object->delete();
     }
     //base repo to destory item
-    public function destory($id)
+    public function destroy($id)
     {
-        return $this->model->findOrFail($id)->forceDelete();
+        $object = $this->model->withTrashed()->findOrFail($id);
+        $object->destroyMediaArray($object->media->pluck('id')->toArray());
+        $object->media()->forceDelete();
+        return $object->forceDelete();
     }
     //base repo to restore item
     public function restore($id)
     {
-        return $this->model->findOrFail($id)->restore();
+        $object = $this->model->onlyTrashed()->findOrFail($id);
+        $object->media()->restore();
+        return $object->restore();
     }
-
 }

@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use DateTimeInterface;
+use Waad\RepoMedia\Helpers\Utilities;
 
 class Media extends Model
 {
@@ -25,6 +26,8 @@ class Media extends Model
         'updated_at'
     ];
 
+    protected $appends = ['file_path'];
+
     protected function serializeDate(DateTimeInterface $date){
         return $date->format('Y-m-d h:i:s a');
     }
@@ -36,8 +39,14 @@ class Media extends Model
         'status' => 'boolean',
     ];
 
-    public function setUserIdAtttribute($value){
-        $this->atttributes['user_id'] = Auth::check() ? auth()->user()->id : null;
+    protected $relations = ['model'];
+
+    public function getFilePathAttribute(){
+        return Utilities::domain() . '/' . $this->attributes['buket'] . '/' . $this->attributes['path'];
+    }
+
+    public function setUserIdAttribute($value){
+        $this->attributes['user_id'] = Auth::check() ? auth()->user()->id : null;
     }
 
     // morph relationship of all models

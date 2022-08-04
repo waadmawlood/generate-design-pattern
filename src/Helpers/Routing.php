@@ -6,20 +6,20 @@ use Illuminate\Routing\ResourceRegistrar as OriginalRegistrar;
 
 class Routing extends OriginalRegistrar
 {
-    protected $resourceDefaults = ['index', 'indexAll', 'indexMe', 'store', 'show', 'update', 'change', 'destroy', 'delete','restore'];
+    protected $resourceDefaults = ['index', 'getAll', 'getMe', 'store', 'show', 'update', 'change', 'destroy', 'delete', 'restore'];
 
 
-    protected function addResourceIndexAll($name, $base, $controller, $options)
+    protected function addResourceGetAll($name, $base, $controller, $options)
     {
-        $uri = $this->getResourceUri($name).'/index/all';
-        $action = $this->getResourceAction($name, $controller, 'indexAll', $options);
+        $uri = $this->getResourceUri($name).'/get/all';
+        $action = $this->getResourceAction($name, $controller, 'getAll', $options);
         return $this->router->get($uri, $action);
     }
 
-    protected function addResourceIndexMe($name, $base, $controller, $options)
+    protected function addResourceGetMe($name, $base, $controller, $options)
     {
-        $uri = $this->getResourceUri($name).'/index/me';
-        $action = $this->getResourceAction($name, $controller, 'indexMe', $options);
+        $uri = $this->getResourceUri($name).'/get/me';
+        $action = $this->getResourceAction($name, $controller, 'getMe', $options);
         return $this->router->get($uri, $action);
     }
 
@@ -41,7 +41,7 @@ class Routing extends OriginalRegistrar
     {
         $uri = $this->getResourceUri($name).'/restore/{id}';
         $action = $this->getResourceAction($name, $controller, 'restore', $options);
-        return $this->router->put($uri, $action);
+        return $this->router->post($uri, $action);
     }
 
 

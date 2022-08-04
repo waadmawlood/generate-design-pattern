@@ -1,19 +1,22 @@
-namespace App\Http\Controllers;
+<?php
+namespace Waad\RepoMedia\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Repositories\{{name}}Repository;
-use App\Models\{{name}};
-use App\Http\Requests\{{name}}Form;
+use Waad\RepoMedia\Models\Media;
 use App\Http\Requests\Pagination;
 use Symfony\Component\HttpFoundation\Response;
+use Waad\RepoMedia\Helpers\Utilities;
+use Waad\RepoMedia\Repositories\MediaRepository;
 
-class {{name}}Controller extends Controller
+class MediaController extends Controller
 {
-    private ${{name}}Repository;
+    private $MediaRepository;
     public function __construct()
     {
         //$this->middleware('role:admin', ['only' => ['getAll', 'store', 'update', 'change', 'show', 'destroy', 'delete', 'restore']]);
-        $this->{{name}}Repository = new {{name}}Repository(new {{model}}());
+        $this->middleware('auth:api', ['only' => ['getMe']]);
+        $this->MediaRepository = new MediaRepository(new Media());
     }
 
     /**
@@ -23,7 +26,7 @@ class {{name}}Controller extends Controller
      */
     public function index(Pagination $request)
     {
-        return $this->{{name}}Repository->index($request->take);
+        return $this->MediaRepository->index($request->take);
     }
 
 
@@ -34,7 +37,7 @@ class {{name}}Controller extends Controller
      */
     public function getAll(Pagination $request)
     {
-        return $this->{{name}}Repository->index($request->take , null , null , $request->trash);
+        return $this->MediaRepository->index($request->take , null , null , $request->trash);
     }
 
 
@@ -51,26 +54,7 @@ class {{name}}Controller extends Controller
             'condition' => '=',
             'value' => auth()->user()->id
         ];
-        return $this->{{name}}Repository->index($request->take, $find);
-    }
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\{{name}}Form  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store({{name}}Form $request)
-    {
-        $data = $request->validated();
-        $response = $this->{{name}}Repository->create($data);
-        return response()->json([
-            'success' => true,
-            'message' => '{{name}} created successfully',
-            'data' => $response
-
-        ], Response::HTTP_OK);
+        return $this->MediaRepository->index($request->take, $find);
     }
 
     /**
@@ -81,25 +65,7 @@ class {{name}}Controller extends Controller
      */
     public function show($id)
     {
-        return $this->{{name}}Repository->show($id);
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\{{name}}Form  $request
-     * @param  \App\\$name  $name
-     * @return \Illuminate\Http\Response
-     */
-    public function update({{name}}Form $request, $id)
-    {
-        $data = $request->validated();
-        $this->{{name}}Repository->update($id, $data);
-        return response()->json([
-            'success' => true,
-            'message' => '{{name}} updated successfully. id ' . $id,
-        ], Response::HTTP_OK);
+        return $this->MediaRepository->show($id);
     }
 
     /**
@@ -111,14 +77,16 @@ class {{name}}Controller extends Controller
      */
     public function change(Request $request, $id)
     {
-        if(! $request->has('status')){
-            return response()->json(['success' => false,'message' => '{{name}} Model not Found. id ' . $id,], 404);
+        if($request->has('status')){
+            $data['status'] = $request->status;
         }
-        $data['status'] = ! {{name}}::findOrFail($id)->status;
-        $this->{{name}}Repository->update($id, $data);
+        else{
+            $data['status'] = ! $this->MediaRepository->show($id)->status;
+        }
+        $this->MediaRepository->update($id, $data);
         return response()->json([
             'success' => true,
-            'message' => '{{name}} updated Toggle successfully. id ' . $id,
+            'message' => 'Media change status successfully. id ' . $id,
         ], Response::HTTP_OK);
     }
 
@@ -130,10 +98,10 @@ class {{name}}Controller extends Controller
      */
     public function delete($id)
     {
-        $this->{{name}}Repository->delete($id);
+        Media::findOrFail($id)->delete();
         return response()->json([
             'success' => true,
-            'message' => '{{name}} Soft Deleted successfully. id ' . $id,
+            'message' => 'Media Soft Deleted successfully. id ' . $id,
         ], Response::HTTP_OK);
     }
 
@@ -145,10 +113,12 @@ class {{name}}Controller extends Controller
      */
     public function destroy($id)
     {
-        $this->{{name}}Repository->destroy($id);
+        $media =  Media::withTrashed()->findOrFail($id);
+        Utilities::deleteFile($media);
+        $media->forceDelete();
         return response()->json([
             'success' => true,
-            'message' => '{{name}} Force Deleted successfully. id ' . $id,
+            'message' => 'Media Force Deleted successfully. id ' . $id,
         ], Response::HTTP_OK);
     }
 
@@ -160,10 +130,10 @@ class {{name}}Controller extends Controller
      */
     public function restore($id)
     {
-        $this->{{name}}Repository->restore($id);
+        Media::onlyTrashed()->findOrFail($id)->restore();
         return response()->json([
             'success' => true,
-            'message' => '{{name}} Restored successfully. id ' . $id,
+            'message' => 'Media Restored successfully. id ' . $id,
         ], Response::HTTP_OK);
     }
 
