@@ -3,7 +3,6 @@ namespace Waad\RepoMedia\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use DateTimeInterface;
 use Waad\RepoMedia\Helpers\Utilities;
 
@@ -22,6 +21,7 @@ class Media extends Model
         'mime_type',
         'file_size',
         'status',
+        'user_id',
         'created_at',
         'updated_at'
     ];
@@ -43,10 +43,6 @@ class Media extends Model
 
     public function getFilePathAttribute(){
         return Utilities::domain() . '/' . $this->attributes['buket'] . '/' . $this->attributes['path'];
-    }
-
-    public function setUserIdAttribute($value){
-        $this->attributes['user_id'] = Auth::check() ? auth()->user()->id : null;
     }
 
     // morph relationship of all models

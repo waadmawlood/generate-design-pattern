@@ -2,6 +2,7 @@
 namespace Waad\RepoMedia\Models;
 
 use DateTimeInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Waad\RepoMedia\Helpers\Utilities;
@@ -50,6 +51,7 @@ trait ModelTrait
             'buket' => $buket,
             'mime_type' => basename($mime),
             'file_size' => filesize($movePath),
+            'user_id' => Auth::check() ? Auth::id() : null,
         ]);
     }
 

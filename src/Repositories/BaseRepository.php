@@ -4,7 +4,6 @@ namespace Waad\RepoMedia\Repositories;
 
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
-use Waad\RepoMedia\Helpers\Utilities;
 
 abstract class BaseRepository
 {
@@ -32,7 +31,7 @@ abstract class BaseRepository
         return $getRelation->getValue(new $this->model);
     }
     //Base repo to get all items
-    public function index($take = null, $find = null, $where = [], $trash = null){
+    public function index($take = null, $find = null, $where = [], $trash = null, $whereHas = []){
         $result = QueryBuilder::for($this->model)
                                 ->allowedIncludes($this->getRelationMethod())
                                 ->allowedFilters($this->getProperties())
@@ -52,6 +51,15 @@ abstract class BaseRepository
                 $result = $result->onlyTrashed();
             }
         }
+
+        if($whereHas){
+            foreach($whereHas as $has) {
+                $result = $result->whereHas($has['model'], function($query) use($has){
+                    $query->where($has['column'],$has['condition'], $has['value']);
+                });
+            }
+        }
+
         return $take == null ? $result->get() : $result->paginate($take);
     }
     //Base repo to get item by id

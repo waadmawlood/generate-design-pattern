@@ -12,7 +12,7 @@ class {{name}}Controller extends Controller
     private ${{name}}Repository;
     public function __construct()
     {
-        //$this->middleware('role:admin', ['only' => ['getAll', 'store', 'update', 'change', 'show', 'destroy', 'delete', 'restore']]);
+        //$this->middleware('role:Admin', ['only' => ['getAll', 'store', 'update', 'change', 'show', 'destroy', 'delete', 'restore']]);
         $this->{{name}}Repository = new {{name}}Repository(new {{model}}());
     }
 
@@ -23,7 +23,7 @@ class {{name}}Controller extends Controller
      */
     public function index(Pagination $request)
     {
-        return $this->{{name}}Repository->index($request->take);
+        return $this->{{name}}Repository->index($request->take, $request->find, $request->where);
     }
 
 
@@ -34,7 +34,7 @@ class {{name}}Controller extends Controller
      */
     public function getAll(Pagination $request)
     {
-        return $this->{{name}}Repository->index($request->take , null , null , $request->trash);
+        return $this->{{name}}Repository->index($request->take , $request->find , $request->where , $request->trash);
     }
 
 
@@ -65,6 +65,11 @@ class {{name}}Controller extends Controller
     {
         $data = $request->validated();
         $response = $this->{{name}}Repository->create($data);
+
+        if($request->file('image')){
+            $response->addMedia($request->file('image'));
+        }
+
         return response()->json([
             'success' => true,
             'message' => '{{name}} created successfully',
@@ -96,6 +101,11 @@ class {{name}}Controller extends Controller
     {
         $data = $request->validated();
         $this->{{name}}Repository->update($id, $data);
+
+        // $response = $this->{{name}}Repository->show($id);
+        // $response->destroyMediaArray($response->media->pluck('id')->toArray());
+        // $response->media()->forceDelete();
+
         return response()->json([
             'success' => true,
             'message' => '{{name}} updated successfully. id ' . $id,
@@ -111,14 +121,14 @@ class {{name}}Controller extends Controller
      */
     public function change(Request $request, $id)
     {
-        if(! $request->has('status')){
-            return response()->json(['success' => false,'message' => '{{name}} Model not Found. id ' . $id,], 404);
-        }
+        // if(! $request->has('status')){
+        //     return response()->json(['success' => false,'message' => '{{name}} Model not Found. id ' . $id,], 404);
+        // }
         $data['status'] = ! {{name}}::findOrFail($id)->status;
         $this->{{name}}Repository->update($id, $data);
         return response()->json([
             'success' => true,
-            'message' => '{{name}} updated Toggle successfully. id ' . $id,
+            'message' => '{{name}} status updated Toggle successfully. id ' . $id,
         ], Response::HTTP_OK);
     }
 
