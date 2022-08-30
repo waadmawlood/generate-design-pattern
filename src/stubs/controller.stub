@@ -41,7 +41,6 @@ class {{name}}Controller extends Controller
     /**
      * Display the specified resource if own me.
      *
-     * @param  Integer  $id
      * @return \Illuminate\Http\Response
      */
     public function getMe(Pagination $request)
@@ -84,9 +83,9 @@ class {{name}}Controller extends Controller
      * @param  Integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show({{model}} {{name_small}})
     {
-        return $this->{{name}}Repository->show($id);
+        return $this->{{name}}Repository->show({{name_small}});
     }
 
 
@@ -94,21 +93,22 @@ class {{name}}Controller extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\{{name}}Form  $request
+     * @param  {{model}} {{name_small}}
      * @param  \App\\$name  $name
      * @return \Illuminate\Http\Response
      */
-    public function update({{name}}Form $request, $id)
+    public function update({{name}}Form $request, {{model}} {{name_small}})
     {
         $data = $request->validated();
-        $this->{{name}}Repository->update($id, $data);
+        $this->{{name}}Repository->update({{name_small}}, $data);
 
-        // $response = $this->{{name}}Repository->show($id);
+        // $response = $this->{{name}}Repository->show({{name_small}});
         // $response->destroyMediaArray($response->media->pluck('id')->toArray());
         // $response->media()->forceDelete();
 
         return response()->json([
             'success' => true,
-            'message' => '{{name}} updated successfully. id ' . $id,
+            'message' => '{{name}} updated successfully. id ' . {{name_small}}->id,
         ], Response::HTTP_OK);
     }
 
@@ -116,64 +116,64 @@ class {{name}}Controller extends Controller
      * Update change the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Integer $id
+     * @param  {{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
-    public function change(Request $request, $id)
+    public function change(Request $request, {{model}} {{name_small}})
     {
         // if(! $request->has('status')){
-        //     return response()->json(['success' => false,'message' => '{{name}} Model not Found. id ' . $id,], 404);
+        //     return response()->json(['success' => false,'message' => '{{name}} Model not Found. id ' . ${{name_small}}->id,], 404);
         // }
-        $data['status'] = ! {{name}}::findOrFail($id)->status;
-        $this->{{name}}Repository->update($id, $data);
+        $data['status'] = ! ${{name_small}}->status;
+        $this->{{name}}Repository->update(${{name_small}}, $data);
         return response()->json([
             'success' => true,
-            'message' => '{{name}} status updated Toggle successfully. id ' . $id,
+            'message' => '{{name}} status updated Toggle successfully. id ' . ${{name_small}}->id,
         ], Response::HTTP_OK);
     }
 
     /**
      * Soft Delete the specified resource from storage.
      *
-     * @param  Integer  $id
+     * @param  {{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete({{model}} {{name_small}})
     {
-        $this->{{name}}Repository->delete($id);
+        $this->{{name}}Repository->delete(${{name_small}});
         return response()->json([
             'success' => true,
-            'message' => '{{name}} Soft Deleted successfully. id ' . $id,
+            'message' => '{{name}} Soft Deleted successfully. id ' . ${{name_small}}->id,
         ], Response::HTTP_OK);
     }
 
     /**
      * Force Delete the specified resource from storage.
      *
-     * @param  Integer  $id
+     * @param  {{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy({{model}} {{name_small}})
     {
-        $this->{{name}}Repository->destroy($id);
+        $this->{{name}}Repository->destroy(${{name_small}});
         return response()->json([
             'success' => true,
-            'message' => '{{name}} Force Deleted successfully. id ' . $id,
+            'message' => '{{name}} Force Deleted successfully. id ' . ${{name_small}}->id,
         ], Response::HTTP_OK);
     }
 
     /**
      * Restore the specified resource from Trashed.
      *
-     * @param  Integer  $id
+     * @param  {{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
-    public function restore($id)
+    public function restore({{model}} {{name_small}})
     {
-        $this->{{name}}Repository->restore($id);
+        $this->{{name}}Repository->restore(${{name_small}});
         return response()->json([
             'success' => true,
-            'message' => '{{name}} Restored successfully. id ' . $id,
+            'message' => '{{name}} Restored successfully. id ' . ${{name_small}}->id,
         ], Response::HTTP_OK);
     }
 

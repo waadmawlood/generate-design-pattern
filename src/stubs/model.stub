@@ -10,7 +10,7 @@ class {{name}} extends Model
     protected $hidden = ['deleted_at'];
     protected $dates = ['deleted_at'];
     protected $casts = [
-
+        // 'status' => 'boolean',
     ];
 
     protected $fillable = [
