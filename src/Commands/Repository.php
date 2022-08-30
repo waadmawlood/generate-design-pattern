@@ -56,7 +56,7 @@ class Repository extends Command
         $text = "<?php\n";
         fwrite($myfile, $text);
         $result = str_replace('{{name}}', $name, $file);
-        $result = "$" . strtolower(str_replace('{{name_small}}', $name, $file));
+        $result = "$" . lcfirst(str_replace('{{name_small}}', $name, $file));
         $result = str_replace('{{model}}', $model, $result);
         fwrite($myfile, $result);
         fclose($myfile);
