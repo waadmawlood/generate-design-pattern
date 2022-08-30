@@ -63,39 +63,35 @@ abstract class BaseRepository
         return $take == null ? $result->get() : $result->paginate($take);
     }
     //Base repo to get item by id
-    public function show($id){
+    public function show($object){
+        $primaryKey =  $object->getKeyName();
         return QueryBuilder::for($this->model)
                             ->allowedIncludes($this->getRelationMethod())
-                            ->findOrFail($id);
+                            ->findOrFail($object->$primaryKey);
     }
     //Base repo to create item
     public function create($data){
         return $this->model->create($data);
     }
     //Base repo to update item
-    public function update($id, $values){
-        $item = $this->model->findOrFail($id);
-        return $item->update($values);
+    public function update($object, $values){
+        return $object->update($values);
     }
     //base repo to delete item
-    public function delete($id)
+    public function delete($object)
     {
-        $object = $this->show($id);
         $object->media()->delete();
         return $object->delete();
     }
     //base repo to destory item
-    public function destroy($id)
+    public function destroy($object)
     {
-        $object = $this->model->withTrashed()->findOrFail($id);
-        $object->destroyMediaArray($object->media->pluck('id')->toArray());
-        $object->media()->forceDelete();
+        $object->destroyMedia();
         return $object->forceDelete();
     }
     //base repo to restore item
-    public function restore($id)
+    public function restore($object)
     {
-        $object = $this->model->onlyTrashed()->findOrFail($id);
         $object->media()->restore();
         return $object->restore();
     }

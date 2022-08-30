@@ -56,7 +56,8 @@ class Repository extends Command
         $text = "<?php\n";
         fwrite($myfile, $text);
         $result = str_replace('{{name}}', $name, $file);
-        $result = "$" . lcfirst(str_replace('{{name_small}}', $name, $file));
+        $name_small = preg_split('#([A-Z][^A-Z]*)#', $name, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $result = "$" . lcfirst(str_replace('{{name_small}}', $name_small[0], $file));
         $result = str_replace('{{model}}', $model, $result);
         fwrite($myfile, $result);
         fclose($myfile);
@@ -80,12 +81,15 @@ class Repository extends Command
             $lines[] = $buffer;
         }
         fclose($fc);
+
+        $name_small = preg_split('#([A-Z][^A-Z]*)#', $name, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
         $f = fopen($file, "w") or die("couldn't open $file");
         $lineCount = count($lines);
         for ($i = 0; $i < $lineCount - 1; $i++) {
             fwrite($f, $lines[$i]);
         }
-        fwrite($f, "Route::Resource('" . strtolower($name) . "', '$controller');" . PHP_EOL);
+        fwrite($f, "Route::Resource('" . lcfirst($name_small[0]) . "', '$controller');" . PHP_EOL);
         fwrite($f, $lines[$lineCount - 1]);
         fclose($f);
     }

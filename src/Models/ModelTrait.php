@@ -10,32 +10,60 @@ use Waad\RepoMedia\Helpers\Utilities;
 trait ModelTrait
 {
     use SoftDeletes;
-    protected function serializeDate(DateTimeInterface $date){
+    protected function serializeDate(DateTimeInterface $date)
+    {
         return $date->format('Y-m-d h:i:s a');
     }
 
     //relation with Media
-    public function media(){
+    public function media()
+    {
         return $this->morphMany(Media::class,'model');
     }
 
-    public function addMedia($file, $index = 0){
-        if($file){
-            return $this->addFile($file, $index);
-        }else{
+    // function to add media for model
+    public function addMedia($file, $index = 0)
+    {
+        if (blank($file)) {
             return null;
         }
-    }
 
-    public function addMediaArray($files){
-        if($files){
-            for($i = 0 ; $i < count($files) ; $i++){
-                $media[] = $this->addFile($files[$i], $i);
+        if(is_array($file)){
+            for($i = 0 ; $i < count($file) ; $i++){
+                $media[] = $this->addFile($file[$i], $i);
             }
             return $media;
         }else{
+            $this->addFile($file, $index);
+        }
+    }
+
+    // function to update media of model
+    public function syncMedia($file , $soft_delete  = false)
+    {
+        if (blank($file)) {
             return null;
         }
+
+        if($soft_delete){
+            $this->media()->delete();
+        }else{
+            $this->destroyMedia();
+            $this->media()->forceDelete();
+        }
+        return $this->addMedia($file , 0);
+    }
+
+    // function to Force delete of model media
+    public function destroyMedia(){
+        $medias = $this->media;
+        if (blank($medias)) {
+            return null;
+        }
+        foreach($medias as $media){
+            Utilities::deleteFile($media);
+        }
+        $this->media()->forceDelete();
     }
 
     private function addFile($file , $index){
@@ -53,18 +81,5 @@ trait ModelTrait
             'file_size' => filesize($movePath),
             'user_id' => Auth::check() ? Auth::id() : null,
         ]);
-    }
-
-    public function destroyMedia($id){
-        $media = $this->media()->findOrFail($id);
-        Utilities::deleteFile($media);
-        $media->forceDelete();
-    }
-
-    public function destroyMediaArray($ids){
-        foreach($ids as $id){
-            $media = $this->media()->findOrFail($id);
-            Utilities::deleteFile($media);
-        }
     }
 }

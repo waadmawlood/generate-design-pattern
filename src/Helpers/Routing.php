@@ -34,14 +34,21 @@ class Routing extends OriginalRegistrar
     {
         $uri = $this->getResourceUri($name).'/delete/{'.$base.'}';
         $action = $this->getResourceAction($name, $controller, 'delete', $options);
-        return $this->router->delete($uri, $action);
+        return $this->router->delete($uri, $action)->withTrashed();
+    }
+
+    protected function addResourceDestroy($name, $base, $controller, $options)
+    {
+        $uri = $this->getResourceUri($name).'/{'.$base.'}';
+        $action = $this->getResourceAction($name, $controller, 'destroy', $options);
+        return $this->router->delete($uri, $action)->withTrashed();
     }
 
     protected function addResourceRestore($name, $base, $controller, $options)
     {
         $uri = $this->getResourceUri($name).'/restore/{'.$base.'}';
         $action = $this->getResourceAction($name, $controller, 'restore', $options);
-        return $this->router->post($uri, $action);
+        return $this->router->post($uri, $action)->withTrashed();
     }
 
 

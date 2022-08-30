@@ -65,9 +65,7 @@ class {{name}}Controller extends Controller
         $data = $request->validated();
         $response = $this->{{name}}Repository->create($data);
 
-        if($request->file('image')){
-            $response->addMedia($request->file('image'));
-        }
+        $response->addMedia($data['image']);
 
         return response()->json([
             'success' => true,
@@ -102,9 +100,7 @@ class {{name}}Controller extends Controller
         $data = $request->validated();
         $this->{{name}}Repository->update({{name_small}}, $data);
 
-        // $response = $this->{{name}}Repository->show({{name_small}});
-        // $response->destroyMediaArray($response->media->pluck('id')->toArray());
-        // $response->media()->forceDelete();
+        {{name_small}}->syncMedia($data['image']);
 
         return response()->json([
             'success' => true,
@@ -119,11 +115,8 @@ class {{name}}Controller extends Controller
      * @param  {{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
-    public function change(Request $request, {{model}} {{name_small}})
+    public function change({{model}} {{name_small}})
     {
-        // if(! $request->has('status')){
-        //     return response()->json(['success' => false,'message' => '{{name}} Model not Found. id ' . ${{name_small}}->id,], 404);
-        // }
         $data['status'] = ! ${{name_small}}->status;
         $this->{{name}}Repository->update(${{name_small}}, $data);
         return response()->json([
