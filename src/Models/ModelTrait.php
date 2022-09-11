@@ -18,11 +18,11 @@ trait ModelTrait
     //relation with Media
     public function media()
     {
-        return $this->morphMany(Media::class,'model');
+        return $this->morphMany(Media::class,'model')->orderByDesc('id');
     }
 
     // function to add media for model
-    public function addMedia($file, $index = 0)
+    public function addMedia($file, $index = 1, $entity = null)
     {
         if (blank($file)) {
             return null;
@@ -30,11 +30,11 @@ trait ModelTrait
 
         if(is_array($file)){
             for($i = 0 ; $i < count($file) ; $i++){
-                $media[] = $this->addFile($file[$i], $i);
+                $media[] = $this->addFile($file[$i], $i, is_array($entity) ? $entity[$i] : $entity);
             }
             return $media;
         }else{
-            $this->addFile($file, $index);
+            $this->addFile($file, $index, $entity);
         }
     }
 
@@ -60,25 +60,31 @@ trait ModelTrait
         if (blank($medias)) {
             return null;
         }
-        foreach($medias as $media){
-            Utilities::deleteFile($media);
+        if(is_array($medias)){
+            foreach($medias as $media){
+                Utilities::deleteFile($media);
+            }
+        }else{
+            Utilities::deleteFile($medias);
         }
+
         $this->media()->forceDelete();
     }
 
-    private function addFile($file , $index){
+    private function addFile($file , $index , $entity){
         $Image = Str::random(32) . time() . '.' .$file->extension();
-        $destinationPath = Utilities::uploadDir();
-        $movePath = $file->move($destinationPath, $Image);
+        $destinationPath = 'public/upload';
+        $file->storeAs($destinationPath, $Image);
         $mime = $file->getClientMimeType();
         $buket = Utilities::getBuket( str_replace('/' . basename($mime),'',$mime));
         return $this->media()->create([
             'path' => $Image,
             'index' => $index,
+            'entity' => $entity,
             'file_name' => $file->getClientOriginalName(),
             'buket' => $buket,
             'mime_type' => basename($mime),
-            'file_size' => filesize($movePath),
+            'file_size' => filesize($file),
             'user_id' => Auth::check() ? Auth::id() : null,
         ]);
     }

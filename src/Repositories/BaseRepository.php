@@ -31,7 +31,7 @@ abstract class BaseRepository
         return $getRelation->getValue(new $this->model);
     }
     //Base repo to get all items
-    public function index($take = null, $find = null, $where = [], $trash = null, $whereHas = []){
+    public function index($take = null, $find = null, $where = [], $trash = null, $whereHas = [], $counts = [], $cache = null){
         $result = QueryBuilder::for($this->model)
                                 ->allowedIncludes($this->getRelationMethod())
                                 ->allowedFilters($this->getProperties())
@@ -60,7 +60,31 @@ abstract class BaseRepository
             }
         }
 
-        return $take == null ? $result->get() : $result->paginate($take);
+        $includes = [];
+        if(request()->has('include')){
+            $includes = explode(',',request('include'));
+            foreach($includes as $include){
+                $result = $result->withCount($include);
+            }
+        }
+
+        if($counts){
+            foreach($counts as $count){
+                if(! in_array($count, $includes)){
+                    $result = $result->withCount($count);
+                }
+            }
+        }
+
+        if(filled($cache)){
+            $currentPage = request()->get('page',1);
+            $nameCache  = $cache .'-'. $take .'-'.$currentPage;
+            return cache()->remember($nameCache, 60, function() use($result, $take){
+                return $result->paginate($take);
+            });
+        }
+
+        return $result->paginate($take);
     }
     //Base repo to get item by id
     public function show($object){

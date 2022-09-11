@@ -16,6 +16,7 @@ class Media extends Model
         'model_type',
         'path',
         'index',
+        'entity',
         'file_name',
         'buket',
         'mime_type',

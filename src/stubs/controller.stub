@@ -1,15 +1,14 @@
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Repositories\{{name}}Repository;
-use App\Models\{{name}};
-use App\Http\Requests\{{name}}Form;
 use App\Http\Requests\Pagination;
-use Symfony\Component\HttpFoundation\Response;
+use App\Http\Repositories\{{name}}Repository;
+use App\Http\Requests\{{name}}Form;
+use App\Models\{{name}};
 
 class {{name}}Controller extends Controller
 {
     private ${{name}}Repository;
+
     public function __construct()
     {
         //$this->middleware('role:Admin', ['only' => ['getAll', 'store', 'update', 'change', 'show', 'destroy', 'delete', 'restore']]);
@@ -19,6 +18,7 @@ class {{name}}Controller extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \App\Http\Requests\Pagination $request
      * @return \Illuminate\Http\Response
      */
     public function index(Pagination $request)
@@ -26,33 +26,31 @@ class {{name}}Controller extends Controller
         return $this->{{name}}Repository->index($request->take, $request->find, $request->where);
     }
 
-
     /**
      * Display a listing of the resource.
      *
+     * @param \App\Http\Requests\Pagination $request
      * @return \Illuminate\Http\Response
      */
     public function getAll(Pagination $request)
     {
-        return $this->{{name}}Repository->index($request->take , $request->find , $request->where , $request->trash);
+        $whereHas = [];
+        $counts = [];
+        return $this->{{name}}Repository->index($request->take, $request->find, $request->where, $request->trash, $whereHas , $counts);
     }
-
 
     /**
      * Display the specified resource if own me.
      *
+     * @param \App\Http\Requests\Pagination $request
      * @return \Illuminate\Http\Response
      */
     public function getMe(Pagination $request)
     {
-        $find = [
-            'column' => 'user_id',
-            'condition' => '=',
-            'value' => auth()->user()->id
-        ];
+        $find = $this->getMeCondition('user_id', '=');
+
         return $this->{{name}}Repository->index($request->take, $find);
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -65,20 +63,15 @@ class {{name}}Controller extends Controller
         $data = $request->validated();
         $response = $this->{{name}}Repository->create($data);
 
-        $response->addMedia($data['image']);
+        $response->addMedia($data['image'] ?? null);
 
-        return response()->json([
-            'success' => true,
-            'message' => '{{name}} created successfully',
-            'data' => $response
-
-        ], Response::HTTP_OK);
+        return $this->jsonResponce('{{name}} created successfully', $response);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Integer  $id
+     * @param  \App\Models\{{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
     public function show({{model}} {{name_small}})
@@ -86,13 +79,11 @@ class {{name}}Controller extends Controller
         return $this->{{name}}Repository->show({{name_small}});
     }
 
-
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\{{name}}Form  $request
-     * @param  {{model}} {{name_small}}
-     * @param  \App\\$name  $name
+     * @param  \App\Models\{{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
     public function update({{name}}Form $request, {{model}} {{name_small}})
@@ -100,74 +91,61 @@ class {{name}}Controller extends Controller
         $data = $request->validated();
         $this->{{name}}Repository->update({{name_small}}, $data);
 
-        {{name_small}}->syncMedia($data['image']);
+        {{name_small}}->syncMedia($data['image'] ?? null);
 
-        return response()->json([
-            'success' => true,
-            'message' => '{{name}} updated successfully. id ' . {{name_small}}->id,
-        ], Response::HTTP_OK);
+        return $this->jsonResponce('{{name}} updated successfully. name ' . {{name_small}}->name);
     }
 
     /**
      * Update change the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  {{model}} {{name_small}}
+     * @param  \App\Models\{{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
     public function change({{model}} {{name_small}})
     {
         $data['status'] = ! ${{name_small}}->status;
         $this->{{name}}Repository->update(${{name_small}}, $data);
-        return response()->json([
-            'success' => true,
-            'message' => '{{name}} status updated Toggle successfully. id ' . ${{name_small}}->id,
-        ], Response::HTTP_OK);
+
+        return $this->jsonResponce('{{name}} status updated Toggle successfully. name ' . {{name_small}}->name);
     }
 
     /**
      * Soft Delete the specified resource from storage.
      *
-     * @param  {{model}} {{name_small}}
+     * @param  \App\Models\{{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
     public function delete({{model}} {{name_small}})
     {
         $this->{{name}}Repository->delete(${{name_small}});
-        return response()->json([
-            'success' => true,
-            'message' => '{{name}} Soft Deleted successfully. id ' . ${{name_small}}->id,
-        ], Response::HTTP_OK);
+
+        return $this->jsonResponce('{{name}} Soft Deleted successfully. name ' . {{name_small}}->name);
     }
 
     /**
      * Force Delete the specified resource from storage.
      *
-     * @param  {{model}} {{name_small}}
+     * @param  \App\Models\{{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
     public function destroy({{model}} {{name_small}})
     {
         $this->{{name}}Repository->destroy(${{name_small}});
-        return response()->json([
-            'success' => true,
-            'message' => '{{name}} Force Deleted successfully. id ' . ${{name_small}}->id,
-        ], Response::HTTP_OK);
+
+        return $this->jsonResponce('{{name}} Force Deleted successfully. name ' . {{name_small}}->name);
     }
 
     /**
      * Restore the specified resource from Trashed.
      *
-     * @param  {{model}} {{name_small}}
+     * @param  \App\Models\{{model}} {{name_small}}
      * @return \Illuminate\Http\Response
      */
     public function restore({{model}} {{name_small}})
     {
         $this->{{name}}Repository->restore(${{name_small}});
-        return response()->json([
-            'success' => true,
-            'message' => '{{name}} Restored successfully. id ' . ${{name_small}}->id,
-        ], Response::HTTP_OK);
-    }
 
+        return $this->jsonResponce('{{name}} Restored successfully. name ' . {{name_small}}->name);
+    }
 }

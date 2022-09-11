@@ -11,7 +11,9 @@ class Utilities {
         return request()->get('host');
     }
     public static function deleteFile($model){
+        set_time_limit(0);
         if($model->path){
+            realpath(Self::uploadDir(). $model->path);
             $pathDelete = realpath(Self::uploadDir(). $model->path);
             if(file_exists($pathDelete)){
                 unlink($pathDelete);

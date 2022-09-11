@@ -32,7 +32,7 @@ class Repository extends Command
         $path = 'app/Models/' . $name . '.php';
         $myfile = fopen($path, "w") or die("Unable to open file!");
         $file = file_get_contents($this->model);
-        $text = "<?php\n";
+        $text = "<?php\n\n";
         fwrite($myfile, $text);
         $result = str_replace('{{name}}', $name, $file);
         fwrite($myfile, $result);
@@ -53,7 +53,7 @@ class Repository extends Command
         $path = 'app\Http\Controllers\\' . $name . 'Controller.php';
         $myfile = fopen($path, "w") or die("Unable to open file!");
         $file = file_get_contents($this->controller);
-        $text = "<?php\n";
+        $text = "<?php\n\n";
         fwrite($myfile, $text);
         $result = str_replace('{{name}}', $name, $file);
         $name_small = preg_split('#([A-Z][^A-Z]*)#', $name, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
@@ -106,7 +106,7 @@ class Repository extends Command
     {
         $myfile = fopen($file, "w") or die("Unable to open file!");
         $file = file_get_contents($this->repository);
-        $text = "<?php\n";
+        $text = "<?php\n\n";
         fwrite($myfile, $text);
         $result = str_replace('{{name}}', $name, $file);
         fwrite($myfile, $result);
@@ -142,7 +142,7 @@ class Repository extends Command
     {
         $myfile = fopen($path, "w") or die("Unable to open file!");
         $file = file_get_contents($this->request);
-        $text = "<?php\n";
+        $text = "<?php\n\n";
         fwrite($myfile, $text);
         $result = str_replace('{{name}}', $name, $file);
         $result = str_replace('{{shortname}}', $shortname, $result);
@@ -175,7 +175,7 @@ class Repository extends Command
         if (!is_null($create)) {
             $myfile = fopen($path, "w") or die("Unable to open file!");
             $file = file_get_contents($this->limitRequest);
-            $text = "<?php\n";
+            $text = "<?php\n\n";
             fwrite($myfile, $text);
             fwrite($myfile, $file);
             fclose($myfile);

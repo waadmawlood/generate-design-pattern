@@ -109,7 +109,7 @@ class Validation extends Command
         }
         $myfile = fopen($path, "w") or die("Unable to open file!");
         $file = file_get_contents($this->requestValidation);
-        $text = "<?php\n";
+        $text = "<?php\n\n";
         fwrite($myfile, $text);
         $result = str_replace('{{name}}', $name, $file);
         $result = str_replace('{{shortname}}', $shortname, $result);

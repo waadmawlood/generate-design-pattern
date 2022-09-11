@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('path');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->integer('index')->default(0);
+            $table->string('entity')->nullable();
             $table->string('file_name')->nullable();
             $table->string('buket')->nullable();
             $table->string('mime_type')->nullable();
