@@ -60,19 +60,9 @@ abstract class BaseRepository
             }
         }
 
-        $includes = [];
-        if(request()->has('include')){
-            $includes = explode(',',request('include'));
-            foreach($includes as $include){
-                $result = $result->withCount($include);
-            }
-        }
-
         if($counts){
             foreach($counts as $count){
-                if(! in_array($count, $includes)){
-                    $result = $result->withCount($count);
-                }
+                $result = $result->withCount($count);
             }
         }
 

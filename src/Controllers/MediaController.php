@@ -1,20 +1,21 @@
 <?php
+
 namespace Waad\RepoMedia\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Waad\RepoMedia\Models\Media;
 use App\Http\Requests\Pagination;
 use Symfony\Component\HttpFoundation\Response;
 use Waad\RepoMedia\Helpers\Utilities;
+use Waad\RepoMedia\Models\Media;
 use Waad\RepoMedia\Repositories\MediaRepository;
 
 class MediaController extends Controller
 {
     private $MediaRepository;
+
     public function __construct()
     {
-        //$this->middleware('role:admin', ['only' => ['getAll', 'store', 'update', 'change', 'show', 'destroy', 'delete', 'restore']]);
+        $this->middleware('role:Admin', ['only' => ['index', 'getAll', 'store', 'update', 'change', 'show', 'destroy', 'delete', 'restore']]);
         $this->middleware('auth:api', ['only' => ['getMe']]);
         $this->MediaRepository = new MediaRepository(new Media());
     }
@@ -29,7 +30,6 @@ class MediaController extends Controller
         return $this->MediaRepository->index($request->take);
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -37,14 +37,12 @@ class MediaController extends Controller
      */
     public function getAll(Pagination $request)
     {
-        return $this->MediaRepository->index($request->take , null , null , $request->trash);
+        return $this->MediaRepository->index($request->take, null, null, $request->trash);
     }
-
 
     /**
      * Display the specified resource if own me.
      *
-     * @param  Integer  $id
      * @return \Illuminate\Http\Response
      */
     public function getMe(Pagination $request)
@@ -52,89 +50,81 @@ class MediaController extends Controller
         $find = [
             'column' => 'user_id',
             'condition' => '=',
-            'value' => auth()->user()->id
+            'value' => auth()->user()->id,
         ];
+
         return $this->MediaRepository->index($request->take, $find);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Media $medium)
     {
-        return $this->MediaRepository->show($id);
+        return $this->MediaRepository->show($medium);
     }
 
     /**
      * Update change the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Integer $id
      * @return \Illuminate\Http\Response
      */
-    public function change(Request $request, $id)
+    public function change(Media $medium)
     {
-        if($request->has('status')){
-            $data['status'] = $request->status;
-        }
-        else{
-            $data['status'] = ! $this->MediaRepository->show($id)->status;
-        }
-        $this->MediaRepository->update($id, $data);
+        $data['status'] = !$medium->status;
+        $this->MediaRepository->update($medium, $data);
+
         return response()->json([
             'success' => true,
-            'message' => 'Media change status successfully. id ' . $id,
+            'message' => 'Media change status successfully. id '.$medium->id,
         ], Response::HTTP_OK);
     }
 
     /**
      * Soft Delete the specified resource from storage.
      *
-     * @param  Integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Media $medium)
     {
-        Media::findOrFail($id)->delete();
+        $medium->delete();
+
         return response()->json([
             'success' => true,
-            'message' => 'Media Soft Deleted successfully. id ' . $id,
+            'message' => 'Media Soft Deleted successfully. id '.$medium->id,
         ], Response::HTTP_OK);
     }
 
     /**
      * Force Delete the specified resource from storage.
      *
-     * @param  Integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Media $medium)
     {
-        $media =  Media::withTrashed()->findOrFail($id);
-        Utilities::deleteFile($media);
-        $media->forceDelete();
+        Utilities::deleteFile($medium);
+        $medium->forceDelete();
+
         return response()->json([
             'success' => true,
-            'message' => 'Media Force Deleted successfully. id ' . $id,
+            'message' => 'Media Force Deleted successfully. id '.$medium->id,
         ], Response::HTTP_OK);
     }
 
     /**
      * Restore the specified resource from Trashed.
      *
-     * @param  Integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function restore($id)
+    public function restore(Media $medium)
     {
-        Media::onlyTrashed()->findOrFail($id)->restore();
+        $medium->restore();
+
         return response()->json([
             'success' => true,
-            'message' => 'Media Restored successfully. id ' . $id,
+            'message' => 'Media Restored successfully. id '.$medium->id,
         ], Response::HTTP_OK);
     }
-
 }
