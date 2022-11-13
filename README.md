@@ -29,7 +29,7 @@ php artisan vendor:publish --provider=Waad\RepoMedia\PatternServiceProvider
 ```sh
 public function boot()
     {
-        $registrar = new \Waad\RepoMedia\Helpers\Routing($this->app['router']);
+        $registrar = new \Waad\Repository\Helpers\Routing($this->app['router']);
         $this->app->bind('Illuminate\Routing\ResourceRegistrar', function () use ($registrar) {
             return $registrar;
         });
