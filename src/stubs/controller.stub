@@ -2,7 +2,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Pagination;
 use App\Http\Repositories\{{name}}Repository;
-use App\Http\Requests\{{name}}Form;
+use App\Http\Requests\{{name}}\{{name}}Form;
 use App\Models\{{name}};
 
 class {{name}}Controller extends Controller
@@ -23,7 +23,7 @@ class {{name}}Controller extends Controller
      */
     public function index(Pagination $request)
     {
-        return $this->{{name}}Repository->index($request->take, $request->find, $request->where);
+        return $this->{{name}}Repository->index($request->find, $request->where)->paginate($request->take);
     }
 
     /**
@@ -34,9 +34,7 @@ class {{name}}Controller extends Controller
      */
     public function getAll(Pagination $request)
     {
-        $whereHas = [];
-        $counts = [];
-        return $this->{{name}}Repository->index($request->take, $request->find, $request->where, $request->trash, $whereHas , $counts);
+        return $this->{{name}}Repository->index($request->find, $request->where, $request->trash)->paginate($request->take);
     }
 
     /**
@@ -49,7 +47,7 @@ class {{name}}Controller extends Controller
     {
         $find = $this->getMeCondition('user_id', '=');
 
-        return $this->{{name}}Repository->index($request->take, $find);
+        return $this->{{name}}Repository->index($find)->paginate($request->take);
     }
 
     /**
@@ -63,89 +61,89 @@ class {{name}}Controller extends Controller
         $data = $request->validated();
         $response = $this->{{name}}Repository->create($data);
 
-        $response->addMedia($data['image'] ?? null);
+        //$response->addMedia($data['image'] ?? null);
 
-        return $this->jsonResponce('{{name}} created successfully', $response);
+        return $this->{{name}}Repository->jsonResponce('{{name}} created successfully', $response);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\{{model}} {{name_small}}
+     * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\Response
      */
-    public function show({{model}} {{name_small}})
+    public function show({{model}} ${{name_small}})
     {
-        return $this->{{name}}Repository->show({{name_small}});
+        return $this->{{name}}Repository->show(${{name_small}});
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\{{name}}Form  $request
-     * @param  \App\Models\{{model}} {{name_small}}
+     * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\Response
      */
-    public function update({{name}}Form $request, {{model}} {{name_small}})
+    public function update({{name}}Form $request, {{model}} ${{name_small}})
     {
         $data = $request->validated();
-        $this->{{name}}Repository->update({{name_small}}, $data);
+        $this->{{name}}Repository->update(${{name_small}}, $data);
 
-        {{name_small}}->syncMedia($data['image'] ?? null);
+        //${{name_small}}->syncMedia($data['image'] ?? null);
 
-        return $this->jsonResponce('{{name}} updated successfully. name ' . {{name_small}}->name);
+        return $this->{{name}}Repository->jsonResponce('{{name}} updated successfully. name ' . ${{name_small}}->name);
     }
 
     /**
      * Update change the specified resource in storage.
      *
-     * @param  \App\Models\{{model}} {{name_small}}
+     * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\Response
      */
-    public function change({{model}} {{name_small}})
+    public function change({{model}} ${{name_small}})
     {
         $data['status'] = ! ${{name_small}}->status;
         $this->{{name}}Repository->update(${{name_small}}, $data);
 
-        return $this->jsonResponce('{{name}} status updated Toggle successfully. name ' . {{name_small}}->name);
-    }
-
-    /**
-     * Soft Delete the specified resource from storage.
-     *
-     * @param  \App\Models\{{model}} {{name_small}}
-     * @return \Illuminate\Http\Response
-     */
-    public function delete({{model}} {{name_small}})
-    {
-        $this->{{name}}Repository->delete(${{name_small}});
-
-        return $this->jsonResponce('{{name}} Soft Deleted successfully. name ' . {{name_small}}->name);
+        return $this->{{name}}Repository->jsonResponce('{{name}} status updated Toggle successfully. name ' . ${{name_small}}->name);
     }
 
     /**
      * Force Delete the specified resource from storage.
      *
-     * @param  \App\Models\{{model}} {{name_small}}
+     * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\Response
      */
-    public function destroy({{model}} {{name_small}})
+    public function delete({{model}} ${{name_small}})
+    {
+        $this->{{name}}Repository->delete(${{name_small}});
+
+        return $this->{{name}}Repository->jsonResponce('{{name}} Force Deleted successfully. name ' . ${{name_small}}->name);
+    }
+
+    /**
+     * Soft Delete the specified resource from storage.
+     *
+     * @param  \App\Models\{{model}} ${{name_small}}
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy({{model}} ${{name_small}})
     {
         $this->{{name}}Repository->destroy(${{name_small}});
 
-        return $this->jsonResponce('{{name}} Force Deleted successfully. name ' . {{name_small}}->name);
+        return $this->{{name}}Repository->jsonResponce('{{name}} Soft Deleted successfully. name ' . ${{name_small}}->name);
     }
 
     /**
      * Restore the specified resource from Trashed.
      *
-     * @param  \App\Models\{{model}} {{name_small}}
+     * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\Response
      */
-    public function restore({{model}} {{name_small}})
+    public function restore({{model}} ${{name_small}})
     {
         $this->{{name}}Repository->restore(${{name_small}});
 
-        return $this->jsonResponce('{{name}} Restored successfully. name ' . {{name_small}}->name);
+        return $this->{{name}}Repository->jsonResponce('{{name}} Restored successfully. name ' . ${{name_small}}->name);
     }
 }
