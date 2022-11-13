@@ -7,7 +7,7 @@
 Require this package with composer using the following command:
 
 ```sh
-composer require waad/repo-media
+composer require waad/generate-design-pattern
 ```
 
 ```sh
