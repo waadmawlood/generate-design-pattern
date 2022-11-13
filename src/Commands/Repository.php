@@ -1,6 +1,6 @@
 <?php
 
-namespace waad\RepoMedia\Commands;
+namespace waad\Repository\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -89,7 +89,7 @@ class Repository extends Command
         for ($i = 0; $i < $lineCount - 1; $i++) {
             fwrite($f, $lines[$i]);
         }
-        fwrite($f, "Route::Resource('" . lcfirst($name_small[0]) . "', '$controller');" . PHP_EOL);
+        fwrite($f, "Route::resource('" . lcfirst($name_small[0]) . "', '$controller');" . PHP_EOL);
         fwrite($f, $lines[$lineCount - 1]);
         fclose($f);
     }
@@ -123,13 +123,13 @@ class Repository extends Command
     public function Request($name)
     {
         $this->createLimitRequest();
-        $path = 'app/Http/Requests/';
+        $path = 'app/Http/Requests';
 
         if (!is_dir($path)) {
             mkdir($path, 0777);
         }
-        $create = $path . '/' . $name . 'Form.php';
-        $this->createRequest($create, $name . 'Form', $name);
+        $create = $path . '/' . $name . '/' . $name . 'Form.php';
+        $this->createRequest($create, $name, $name);
     }
 
 
