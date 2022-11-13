@@ -89,7 +89,7 @@ class GenerateValidation extends Validation
          * update request file.
          */
         $create = $path . '/' . $model . '/' . $model . 'Form.php';
-        $this->createRequest($create, $model . 'Form', $validation, $model);
+        $this->createRequest($create, $model, $validation, $model);
 
         /**
          * return message.
