@@ -123,7 +123,7 @@ class Repository extends Command
     public function Request($name)
     {
         $this->createLimitRequest();
-        $path = 'app/Http/Requests';
+        $path = 'app/Http/Requests/'.$name;
 
         if (!is_dir($path)) {
             mkdir($path, 0777);
