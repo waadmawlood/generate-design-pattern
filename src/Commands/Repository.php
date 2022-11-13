@@ -55,9 +55,9 @@ class Repository extends Command
         $file = file_get_contents($this->controller);
         $text = "<?php\n\n";
         fwrite($myfile, $text);
-        $result = str_replace('{{name}}', $name, $file);
-        $name_small = preg_split('#([A-Z][^A-Z]*)#', $name, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        $result = lcfirst(str_replace('{{name_small}}', $name_small[0], $file));
+        $result = str_replace('{{name}}', $model, $file);
+        $name_small = preg_split('#([A-Z][^A-Z]*)#', $model, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $result = str_replace('{{name_small}}', lcfirst($name_small[0]), $file);
         $result = str_replace('{{model}}', $model, $result);
         fwrite($myfile, $result);
         fclose($myfile);
