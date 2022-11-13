@@ -1,6 +1,6 @@
-# Laravel Design Pattern Generator (api generator)
+
+# Generate Design Pattern
 ### you can create your restful api easily by using this library
-##### and you can filter, sort and include eloquent relations based on a request
 
 
 ## Installation:
@@ -47,6 +47,13 @@ php artisan repo:model User --c --r --model=User
 ```
 ##### and you can use `--force` command
 
+---
+
+#### create validation 
+```sh
+php artisan repo:validation User
+```
+
 
 ### Available command options:
 
@@ -60,40 +67,6 @@ Command | Description
 
 
 
-##### FILTER A QUERY BASED ON A REQUEST
-```sh
-/users?filter[name]=John
-```
-
-INCLUDING RELATIONS BASED ON A REQUEST
-```sh
-/users?include=posts
-/users?include=posts,comments
-/users?include=posts,comments.user
-```
-
-SORTING A QUERY BASED ON A REQUEST
-```sh
-/users?sort=id
-/users?sort=-id
-```
-
-
-TAKE PAGINATION DATA
-```sh
-/users?take=10
-```
-TAKE All DATA without take = null
-
-Page pagination DATA
-```sh
-/users?page=10
-```
-
-Find CUSTOM CONDITION
-```sh
-/users?find[column]=department_id&find[condition]==&find[value]=2 
-```
 
 
 ### License
