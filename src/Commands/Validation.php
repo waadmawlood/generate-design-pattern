@@ -1,6 +1,6 @@
 <?php
 
-namespace waad\RepoMedia\Commands;
+namespace waad\Repository\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +48,9 @@ class Validation extends Command
         $result = [];
         $count = count($columns);
         $last = false;
+        echo PHP_EOL . PHP_EOL;
+        echo "protected $fillable = [" . PHP_EOL;
+        
         foreach ($columns as $key => $column) {
             if ($count == $key + 1) {
                 $last = true;
@@ -89,8 +92,10 @@ class Validation extends Command
                         "=>" .
                         "" . implode("|", $validation) . ""
                 );
+                echo "'" . $column->Field . "'," . PHP_EOL;
             }
         }
+        echo "];" . PHP_EOL . PHP_EOL;
         return str_replace('=>', '" => "', $result);
     }
 
