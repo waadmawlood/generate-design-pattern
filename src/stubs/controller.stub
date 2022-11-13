@@ -19,7 +19,7 @@ class {{name}}Controller extends Controller
      * Display a listing of the resource.
      *
      * @param \App\Http\Requests\Pagination $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function index(Pagination $request)
     {
@@ -30,7 +30,7 @@ class {{name}}Controller extends Controller
      * Display a listing of the resource.
      *
      * @param \App\Http\Requests\Pagination $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getAll(Pagination $request)
     {
@@ -54,7 +54,7 @@ class {{name}}Controller extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\{{name}}Form  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store({{name}}Form $request)
     {
@@ -82,7 +82,7 @@ class {{name}}Controller extends Controller
      *
      * @param  \App\Http\Requests\{{name}}Form  $request
      * @param  \App\Models\{{model}} ${{name_small}}
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update({{name}}Form $request, {{model}} ${{name_small}})
     {
@@ -98,7 +98,7 @@ class {{name}}Controller extends Controller
      * Update change the specified resource in storage.
      *
      * @param  \App\Models\{{model}} ${{name_small}}
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function change({{model}} ${{name_small}})
     {
@@ -107,25 +107,12 @@ class {{name}}Controller extends Controller
 
         return $this->{{name}}Repository->jsonResponce('{{name}} status updated Toggle successfully. name ' . ${{name_small}}->name);
     }
-
-    /**
-     * Force Delete the specified resource from storage.
-     *
-     * @param  \App\Models\{{model}} ${{name_small}}
-     * @return \Illuminate\Http\Response
-     */
-    public function delete({{model}} ${{name_small}})
-    {
-        $this->{{name}}Repository->delete(${{name_small}});
-
-        return $this->{{name}}Repository->jsonResponce('{{name}} Force Deleted successfully. name ' . ${{name_small}}->name);
-    }
-
+    
     /**
      * Soft Delete the specified resource from storage.
      *
      * @param  \App\Models\{{model}} ${{name_small}}
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy({{model}} ${{name_small}})
     {
@@ -135,10 +122,23 @@ class {{name}}Controller extends Controller
     }
 
     /**
+     * Force Delete the specified resource from storage.
+     *
+     * @param  \App\Models\{{model}} ${{name_small}}
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete({{model}} ${{name_small}})
+    {
+        $this->{{name}}Repository->delete(${{name_small}});
+
+        return $this->{{name}}Repository->jsonResponce('{{name}} Force Deleted successfully. name ' . ${{name_small}}->name);
+    }
+
+    /**
      * Restore the specified resource from Trashed.
      *
      * @param  \App\Models\{{model}} ${{name_small}}
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function restore({{model}} ${{name_small}})
     {
