@@ -41,7 +41,7 @@ class {{model}}Controller extends Controller
      * Display the specified resource if own me.
      *
      * @param \App\Http\Requests\Pagination $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getMe(Pagination $request)
     {
@@ -53,7 +53,7 @@ class {{model}}Controller extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\{{model}}Form  $request
+     * @param  \App\Http\Requests\{{model}}\{{model}}Form  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store({{model}}Form $request)
@@ -80,7 +80,7 @@ class {{model}}Controller extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\{{model}}Form  $request
+     * @param  \App\Http\Requests\{{model}}\{{model}}Form  $request
      * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\JsonResponse
      */
