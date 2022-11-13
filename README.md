@@ -11,7 +11,7 @@ composer require waad/generate-design-pattern
 ```
 
 ```sh
-php artisan vendor:publish --provider=Waad\RepoMedia\PatternServiceProvider 
+php artisan vendor:publish --provider=Waad\Repository\RepositoryServiceProvider 
 ```
 
 ## Usage
