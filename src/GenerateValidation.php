@@ -68,7 +68,7 @@ class GenerateValidation extends Validation
         /**
          * Request file path.
          */
-        $path = 'app/Http/Requests';
+        $path = 'app/Http/Requests/' . $model;
 
         /**
          * create path when not exists.
@@ -88,7 +88,7 @@ class GenerateValidation extends Validation
          * create request file.
          * update request file.
          */
-        $create = $path . '/' . $model . '/' . $model . 'Form.php';
+        $create = $path . '/' . $model . 'Form.php';
         $this->createRequest($create, $model, $validation, $model);
 
         /**
