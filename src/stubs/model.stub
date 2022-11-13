@@ -1,11 +1,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Waad\RepoMedia\Models\ModelTrait;
 
 class {{name}} extends Model
 {
-    use ModelTrait;
+
+
 
     protected $hidden = ['deleted_at'];
     protected $dates = ['deleted_at'];
