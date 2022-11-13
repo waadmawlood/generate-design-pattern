@@ -1,11 +1,11 @@
-namespace App\Http\Requests;
+namespace App\Http\Requests\{{name}};
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class {{name}} extends FormRequest
+class {{name}}Form extends FormRequest
 {
     /**
-     * Determine if the {{name}} is authorized to make this request.
+     * Determine if the {{name}}Form is authorized to make this request.
      *
      * @return bool
      */
