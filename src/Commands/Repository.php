@@ -50,7 +50,7 @@ class Repository extends Command
         if (!$model) {
             $model = "ModelHere";
         }
-        $path = 'app\Http\Controllers\\' . $name . 'Controller.php';
+        $path = implode(DIRECTORY_SEPARATOR, ['app','Http','Controllers', $name . 'Controller.php']);
         $myfile = fopen($path, "w") or die("Unable to open file!");
         $file = file_get_contents($this->controller);
         $text = "<?php\n\n";
