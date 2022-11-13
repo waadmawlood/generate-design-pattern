@@ -2,7 +2,6 @@
 
 namespace Waad\Repository;
 
-use Waad\RepoMedia\GenerateRepo;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
