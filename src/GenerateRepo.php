@@ -1,8 +1,8 @@
 <?php
 
-namespace Waad\RepoMedia;
+namespace Waad\Repository;
 
-use Waad\RepoMedia\Commands\Repository;
+use Waad\Repository\Commands\Repository;
 use Illuminate\Support\Str;
 
 class GenerateRepo extends Repository
@@ -17,7 +17,7 @@ class GenerateRepo extends Repository
                         {name : Repo name}
                         {--c : Create Controller With Repository}
                         {--m : Create Model With Repository}
-                        {--r : Create apiResource Route}
+                        {--r : Create Resource Route}
                         {--force : Allows to override existing Repository}
                         {--model= : Insert model in controller}
                         {--table= : Insert table name to create migration}
