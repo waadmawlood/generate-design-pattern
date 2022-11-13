@@ -1,6 +1,6 @@
 <?php
 
-namespace Waad\RepoMedia\Helpers;
+namespace Waad\Repository\Helpers;
 
 use Illuminate\Routing\ResourceRegistrar as OriginalRegistrar;
 
@@ -36,14 +36,6 @@ class Routing extends OriginalRegistrar
     {
         $uri = $this->getResourceUri($name).'/delete/{'.$base.'}';
         $action = $this->getResourceAction($name, $controller, 'delete', $options);
-
-        return $this->router->delete($uri, $action)->withTrashed();
-    }
-
-    protected function addResourceDestroy($name, $base, $controller, $options)
-    {
-        $uri = $this->getResourceUri($name).'/{'.$base.'}';
-        $action = $this->getResourceAction($name, $controller, 'destroy', $options);
 
         return $this->router->delete($uri, $action)->withTrashed();
     }
