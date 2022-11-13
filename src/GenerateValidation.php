@@ -1,8 +1,8 @@
 <?php
 
-namespace Waad\RepoMedia;
+namespace Waad\Repository;
 
-use Waad\RepoMedia\Commands\Validation;
+use Waad\Repository\Commands\Validation;
 
 class GenerateValidation extends Validation
 {
@@ -88,12 +88,12 @@ class GenerateValidation extends Validation
          * create request file.
          * update request file.
          */
-        $create = $path . '/' . $model . 'Form.php';
+        $create = $path . '/' . $model . '/' . $model . 'Form.php';
         $this->createRequest($create, $model . 'Form', $validation, $model);
 
         /**
          * return message.
          */
-        return $this->comment('app\\Http\\Requests\\' . $model . 'Form >> Validated.');
+        return $this->comment('app\\Http\\Requests\\' . $model . '\\'. $model . 'Form >> Validated.');
     }
 }
