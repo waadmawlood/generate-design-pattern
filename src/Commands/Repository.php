@@ -128,7 +128,7 @@ class Repository extends Command
         if (!is_dir($path)) {
             mkdir($path, 0777);
         }
-        $create = $path . '/' . $name . '/' . $name . 'Form.php';
+        $create = $path . '/' . $name . 'Form.php';
         $this->createRequest($create, $name, $name);
     }
 
