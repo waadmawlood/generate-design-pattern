@@ -24,8 +24,7 @@ class Pagination extends FormRequest
         return [
             'take' => 'nullable|integer',
             'page' => 'nullable|integer',
-            'trash' => 'nullable|string|max:5',
-            'json' => 'nullable|string|max:5',
+            'trash' => 'nullable|string|in:trash,all,current',
             'secret' => 'nullable|string|max:120',
         ];
     }
