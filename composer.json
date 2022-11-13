@@ -1,30 +1,43 @@
 {
-    "name": "waad/repo-media",
-    "description": "package repository design pattern and media",
-    "type": "library",
-    "require": {
-        "php": ">=7.2",
-        "illuminate/support": ">=5.4",
-        "spatie/laravel-query-builder": "^3.4"
-    },
+    "name": "waad/generate-design-pattern",
+    "description": "package to generate repository design pattern dev",
+    "keywords": [
+        "Waad Mawlood",
+        "repository",
+        "laravel",
+        "design pattetn",
+        "laravel-php",
+        "repo"
+    ],
+    "homepage": "https://github.com/waadmawlood/generate-design-pattern",
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Waad\\RepoMedia\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Waad\\RepoMedia\\PatternServiceProvider"
-            ]
-        }
-    },
     "authors": [
         {
             "name": "Waad Mawlood",
-            "email": "w12345678996392@gmail.com"
+            "email": "waad_mawlood@outlook.com",
+            "homepage": "https://waad.netlify.app",
+            "role": "Developer"
         }
     ],
-    "minimum-stability": "dev"
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Waad\\Repository\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Waad\\Repository\\RepositoryServiceProvider"
+            ]
+        }
+    }
 }
