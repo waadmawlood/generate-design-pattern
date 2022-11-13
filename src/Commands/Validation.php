@@ -49,7 +49,7 @@ class Validation extends Command
         $count = count($columns);
         $last = false;
         echo PHP_EOL . PHP_EOL;
-        echo "protected $fillable = [" . PHP_EOL;
+        echo "protected \$fillable = [" . PHP_EOL;
         
         foreach ($columns as $key => $column) {
             if ($count == $key + 1) {
