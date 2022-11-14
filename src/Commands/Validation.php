@@ -49,8 +49,9 @@ class Validation extends Command
         $count = count($columns);
         $last = false;
         echo PHP_EOL . PHP_EOL;
-        echo "protected \$fillable = [" . PHP_EOL;
-        
+        echo "\tprotected \$fillable = [" . PHP_EOL;
+        echo "\t\t'id'," . PHP_EOL;
+
         foreach ($columns as $key => $column) {
             if ($count == $key + 1) {
                 $last = true;
@@ -92,10 +93,12 @@ class Validation extends Command
                         "=>" .
                         "" . implode("|", $validation) . ""
                 );
-                echo "'" . $column->Field . "'," . PHP_EOL;
+                echo "\t\t'" . $column->Field . "'," . PHP_EOL;
             }
         }
-        echo "];" . PHP_EOL . PHP_EOL;
+        echo "\t\t'created_at'," . PHP_EOL;
+        echo "\t\t'update_at'," . PHP_EOL;
+        echo "\t];" . PHP_EOL . PHP_EOL;
         return str_replace('=>', '" => "', $result);
     }
 
