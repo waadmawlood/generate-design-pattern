@@ -16,7 +16,7 @@ class {{model}}Controller extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Get List
      *
      * @param \App\Http\Requests\Pagination $request
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
@@ -27,7 +27,7 @@ class {{model}}Controller extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Get All (Admin)
      *
      * @param \App\Http\Requests\Pagination $request
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
@@ -38,7 +38,7 @@ class {{model}}Controller extends Controller
     }
 
     /**
-     * Display the specified resource if own me.
+     * Get Me (Owner)
      *
      * @param \App\Http\Requests\Pagination $request
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
@@ -51,7 +51,7 @@ class {{model}}Controller extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create
      *
      * @param  \App\Http\Requests\{{model}}\{{model}}Form  $request
      * @return \Illuminate\Http\JsonResponse
@@ -67,7 +67,7 @@ class {{model}}Controller extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show
      *
      * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\Response
@@ -78,7 +78,7 @@ class {{model}}Controller extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update
      *
      * @param  \App\Http\Requests\{{model}}\{{model}}Form  $request
      * @param  \App\Models\{{model}} ${{name_small}}
@@ -95,7 +95,7 @@ class {{model}}Controller extends Controller
     }
 
     /**
-     * Update change the specified resource in storage.
+     * Change
      *
      * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\JsonResponse
@@ -107,9 +107,9 @@ class {{model}}Controller extends Controller
 
         return $this->{{model}}Repository->jsonResponce('{{model}} status updated Toggle successfully. name ' . ${{name_small}}->name);
     }
-    
+
     /**
-     * Soft Delete the specified resource from storage.
+     * Soft Delete
      *
      * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\JsonResponse
@@ -122,7 +122,7 @@ class {{model}}Controller extends Controller
     }
 
     /**
-     * Force Delete the specified resource from storage.
+     * Force Delete
      *
      * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\JsonResponse
@@ -135,7 +135,7 @@ class {{model}}Controller extends Controller
     }
 
     /**
-     * Restore the specified resource from Trashed.
+     * Restore
      *
      * @param  \App\Models\{{model}} ${{name_small}}
      * @return \Illuminate\Http\JsonResponse
