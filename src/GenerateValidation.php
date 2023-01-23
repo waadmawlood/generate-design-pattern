@@ -82,7 +82,7 @@ class GenerateValidation extends Validation
          *
          * @return string
          */
-        $validation = $this->generateValidation($table, $model);
+        $validation = $this->generateValidation($table);
 
         /**
          * create request file.

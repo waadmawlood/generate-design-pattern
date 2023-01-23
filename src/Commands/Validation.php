@@ -23,7 +23,7 @@ class Validation extends Command
 
 
     /**
-     * get table name using model
+     * Get table name using model
      *
      * @return string
      */
@@ -34,12 +34,12 @@ class Validation extends Command
 
 
     /**
-     * generate validations
-     * get validations from table
+     * Generate validations
+     * Get validations from table
      *
      * @return string
      */
-    public function generateValidation($table, $model)
+    public function generateValidation($table)
     {
         $columns = DB::select('describe ' . $table . '');
         $blocked = array('created_at', 'updated_at', 'email_verified_at', 'remember_token','deleted_at');
@@ -128,7 +128,7 @@ class Validation extends Command
 
 
     /**
-     * get column type.
+     * Get column type.
      *
      * @return string
      */
